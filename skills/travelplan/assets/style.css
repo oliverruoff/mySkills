@@ -1,0 +1,464 @@
+@page {
+  size: A4;
+  margin: 15mm 14mm 18mm 14mm;
+  @bottom-center {
+    content: counter(page);
+    font-family: 'DejaVu Sans', sans-serif;
+    font-size: 9pt;
+    color: #666;
+  }
+}
+
+@page :first {
+  margin: 0;
+  @bottom-center { content: none; }
+}
+
+@page cover {
+  margin: 0;
+  @bottom-center { content: none; }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
+  font-size: 10pt;
+  line-height: 1.45;
+  color: #2c3e50;
+  margin: 0;
+  padding: 0;
+}
+
+/* Deckblatt */
+.cover {
+  page: cover;
+  width: 210mm;
+  height: 297mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+}
+
+.cover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.cover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.75) 100%);
+  z-index: 2;
+}
+
+.cover-content {
+  position: absolute;
+  bottom: 50mm;
+  left: 18mm;
+  right: 18mm;
+  z-index: 3;
+  color: white;
+}
+
+.cover-title {
+  font-size: 32pt;
+  font-weight: bold;
+  margin: 0 0 6mm 0;
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.9), 0 0 40px rgba(0,0,0,0.6);
+}
+
+.cover-subtitle {
+  font-size: 13pt;
+  margin: 0 0 3mm 0;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+}
+
+.cover-meta {
+  font-size: 11pt;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+}
+
+/* Überschriften */
+h1 {
+  font-size: 20pt;
+  color: #1a252f;
+  margin: 0 0 5mm 0;
+  padding-bottom: 2mm;
+  border-bottom: 2px solid #e74c3c;
+  page-break-after: avoid;
+}
+
+h2 {
+  font-size: 14pt;
+  color: #2c3e50;
+  margin: 6mm 0 3mm 0;
+  page-break-after: avoid;
+}
+
+h3 {
+  font-size: 11pt;
+  color: #34495e;
+  margin: 4mm 0 2mm 0;
+  page-break-after: avoid;
+}
+
+/* Sections – keine harten Umbrüche mehr */
+.section {
+  margin-bottom: 8mm;
+}
+
+.section-major {
+  page-break-before: always;
+}
+
+.section-major:first-of-type {
+  page-break-before: auto;
+}
+
+/* Karten */
+.map-container {
+  text-align: center;
+  margin: 4mm 0;
+  page-break-inside: avoid;
+}
+
+.map-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 90mm;
+  border-radius: 2mm;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.map-caption {
+  font-size: 8pt;
+  color: #7f8c8d;
+  margin-top: 1mm;
+  text-align: center;
+}
+
+/* Übersichtstabelle */
+.overview-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 3mm 0;
+  font-size: 9pt;
+}
+
+.overview-table th {
+  background: #2c3e50;
+  color: white;
+  padding: 2.5mm 2mm;
+  text-align: left;
+  font-weight: bold;
+}
+
+.overview-table td {
+  padding: 2mm 2mm;
+  border-bottom: 0.5pt solid #ddd;
+}
+
+.overview-table tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+/* Tages-Header */
+.day-header {
+  background: #1a252f;
+  color: white;
+  padding: 4mm 5mm;
+  margin: 0 0 4mm 0;
+  border-radius: 2mm;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  page-break-inside: avoid;
+  page-break-after: avoid;
+}
+
+.day-header-left {
+  flex: 1;
+}
+
+.day-number {
+  font-size: 9pt;
+  text-transform: uppercase;
+  letter-spacing: 1pt;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.day-city {
+  font-size: 16pt;
+  font-weight: bold;
+  margin: 0.5mm 0 0 0;
+}
+
+.day-header-right {
+  text-align: right;
+}
+
+.day-date {
+  font-size: 9pt;
+  margin: 0;
+}
+
+.day-weather {
+  font-size: 8.5pt;
+  opacity: 0.85;
+  margin: 0.5mm 0 0 0;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  margin: 3mm 0;
+  padding-left: 7mm;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 1.5mm;
+  top: 0;
+  bottom: 0;
+  width: 0.6mm;
+  background: #e74c3c;
+  border-radius: 0.3mm;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 4mm;
+  page-break-inside: avoid;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -6.2mm;
+  top: 1.2mm;
+  width: 2.5mm;
+  height: 2.5mm;
+  background: white;
+  border: 0.6mm solid #e74c3c;
+  border-radius: 50%;
+}
+
+.timeline-time {
+  font-size: 8.5pt;
+  font-weight: bold;
+  color: #e74c3c;
+  margin: 0 0 0.5mm 0;
+}
+
+.timeline-title {
+  font-size: 10.5pt;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 0 0 1mm 0;
+}
+
+.timeline-desc {
+  font-size: 9pt;
+  color: #444;
+  margin: 0 0 1.5mm 0;
+  line-height: 1.4;
+}
+
+.timeline-meta {
+  font-size: 8pt;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.timeline-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 40mm;
+  object-fit: cover;
+  border-radius: 2mm;
+  margin-top: 1.5mm;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Transport-Hinweis / Tipp */
+.transport-box {
+  background: #ecf0f1;
+  border-left: 2.5mm solid #3498db;
+  padding: 2.5mm 3mm;
+  margin: 2mm 0 4mm 0;
+  font-size: 9pt;
+  color: #2c3e50;
+  page-break-inside: avoid;
+  border-radius: 0 2mm 2mm 0;
+}
+
+.transport-box strong {
+  color: #2980b9;
+}
+
+/* Info-Boxen */
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3mm;
+  margin: 3mm 0;
+}
+
+.info-box {
+  flex: 1 1 45%;
+  background: #f8f9fa;
+  border-radius: 2mm;
+  padding: 3mm;
+  page-break-inside: avoid;
+}
+
+.info-box h3 {
+  margin-top: 0;
+  color: #e74c3c;
+  font-size: 10pt;
+}
+
+.info-box p, .info-box ul {
+  margin: 0;
+  font-size: 9pt;
+}
+
+.info-box ul {
+  padding-left: 4mm;
+}
+
+/* Destination Guide Box */
+.destination-box {
+  background: #fff;
+  border: 0.5pt solid #ddd;
+  border-radius: 2mm;
+  padding: 4mm;
+  margin-bottom: 5mm;
+  page-break-inside: avoid;
+}
+
+.destination-box h2 {
+  margin-top: 0;
+  border-bottom: 1px solid #e74c3c;
+  padding-bottom: 1.5mm;
+}
+
+.destination-desc {
+  font-size: 9.5pt;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 3mm;
+}
+
+.destination-highlights {
+  margin: 2mm 0;
+  padding-left: 4mm;
+  font-size: 9pt;
+}
+
+.destination-highlights li {
+  margin-bottom: 1mm;
+}
+
+.destination-tips {
+  background: #fff9e6;
+  border-left: 2mm solid #f1c40f;
+  padding: 2mm 3mm;
+  margin: 2mm 0;
+  font-size: 9pt;
+  border-radius: 0 2mm 2mm 0;
+}
+
+/* Packliste */
+.packlist {
+  columns: 2;
+  column-gap: 5mm;
+  margin: 2mm 0;
+}
+
+.packlist-item {
+  font-size: 9pt;
+  padding: 1mm 0;
+  border-bottom: 0.3pt dotted #ccc;
+  page-break-inside: avoid;
+}
+
+/* Fix bullet rendering */
+.destination-highlights {
+  margin: 2mm 0;
+  padding-left: 4mm;
+  font-size: 9pt;
+  list-style: none;
+}
+
+.destination-highlights li {
+  margin-bottom: 1mm;
+  position: relative;
+  padding-left: 3mm;
+}
+
+.destination-highlights li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* Day intro box */
+.day-intro {
+  background: #f0f4f8;
+  border-radius: 2mm;
+  padding: 3mm 4mm;
+  margin: 0 0 4mm 0;
+  font-size: 9.5pt;
+  line-height: 1.5;
+  color: #2c3e50;
+  page-break-inside: avoid;
+}
+
+/* Wetter-Icons als Text */
+.weather-sunny::before { content: '☀ '; }
+.weather-cloudy::before { content: '☁ '; }
+.weather-rain::before { content: '🌧 '; }
+.weather-snow::before { content: '❄ '; }
+
+/* Zwei-Spaltig */
+.two-col {
+  columns: 2;
+  column-gap: 5mm;
+}
+
+/* Kosten-Highlight */
+.price-tag {
+  display: inline-block;
+  background: #e74c3c;
+  color: white;
+  font-size: 7.5pt;
+  font-weight: bold;
+  padding: 0.8mm 1.5mm;
+  border-radius: 1mm;
+  margin-left: 2mm;
+}
+
+/* Seitenumbruch vermeiden bei wichtigen Blöcken */
+.avoid-break {
+  page-break-inside: avoid;
+}

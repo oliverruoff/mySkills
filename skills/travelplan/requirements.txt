@@ -1,0 +1,6 @@
+staticmap
+qrcode[pil]
+weasyprint
+requests
+Pillow
+jinja2

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>{{ title }}</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Deckblatt -->
+{% if hero_image %}
+<div class="cover">
+  <img class="cover-image" src="{{ hero_image }}" alt="Reisebild">
+  <div class="cover-overlay"></div>
+  <div class="cover-content">
+    <h1 class="cover-title">{{ title }}</h1>
+    <p class="cover-subtitle">{{ dates }}{% if travelers %} &bull; {{ travelers }}{% endif %}</p>
+    {% if subtitle %}<p class="cover-meta">{{ subtitle }}</p>{% endif %}
+  </div>
+</div>
+{% else %}
+<div class="section-major">
+  <h1>{{ title }}</h1>
+  <p>{{ dates }}{% if travelers %} &bull; {{ travelers }}{% endif %}</p>
+</div>
+{% endif %}
+
+<!-- Übersicht -->
+<div class="section-major">
+  <h1>Reiseübersicht</h1>
+
+  {% if overview_map.local_image %}
+  <div class="map-container avoid-break">
+    <img class="map-image" src="{{ overview_map.local_image }}" alt="Gesamtkarte">
+    <p class="map-caption">Die Reiseroute auf einen Blick</p>
+  </div>
+  {% endif %}
+
+  <table class="overview-table">
+    <thead>
+      <tr><th>Tag</th><th>Datum</th><th>Ort</th><th>Highlights</th></tr>
+    </thead>
+    <tbody>
+      {% for day in days %}
+      <tr>
+        <td>Tag {{ day.day_num }}</td>
+        <td>{{ day.date }}</td>
+        <td>{{ day.city }}</td>
+        <td>{{ day.highlights | default(day.schedule | map(attribute='title') | join(', ')) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if weather %}
+  <h2>Wettervorhersage</h2>
+  <div class="info-grid">
+    {% for w in weather %}
+    <div class="info-box avoid-break">
+      <h3>{{ w.city }} – {{ w.date }}</h3>
+      <p class="weather-{{ w.condition | lower }}">{{ w.temp_max }}°C / {{ w.temp_min }}°C, {{ w.condition }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if overview_map.cities %}
+  <h2>Stationen</h2>
+  <div class="two-col">
+    {% for city in overview_map.cities %}
+    <div class="avoid-break" style="margin-bottom:3mm;">
+      <strong>{{ loop.index }}. {{ city.name }}</strong>
+      {% if city.nights %}<span class="price-tag">{{ city.nights }} Nächte</span>{% endif %}
+      {% if city.description %}<br><span style="font-size:9pt;color:#555;">{{ city.description }}</span>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+
+<!-- Destination Guides -->
+{% if destinations %}
+<div class="section-major">
+  <h1>Destination Guides</h1>
+  <p style="font-size:9.5pt;color:#555;margin-bottom:4mm;">
+    Ausführliche Infos zu allen Stationen eurer Reise – Sehenswürdigkeiten, Tipps, lokale Besonderheiten und kulinarische Highlights.
+  </p>
+
+  {% for dest in destinations %}
+  <div class="destination-box">
+    <h2>{{ dest.name }}{% if dest.nights %} <span class="price-tag">{{ dest.nights }} Nächte</span>{% endif %}</h2>
+
+    {% if dest.description %}
+    <p class="destination-desc">{{ dest.description }}</p>
+    {% endif %}
+
+    {% if dest.highlights %}
+    <h3>🎯 Top-Sehenswürdigkeiten</h3>
+    <ul class="destination-highlights">
+      {% for h in dest.highlights %}
+      <li><strong>{{ h.name }}</strong>{% if h.desc %} – {{ h.desc }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if dest.must_try_food %}
+    <h3>🍜 Kulinarisches</h3>
+    <ul class="destination-highlights">
+      {% for food in dest.must_try_food %}
+      <li><strong>{{ food.name }}</strong>{% if food.desc %} – {{ food.desc }}{% endif %}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if dest.tips %}
+    <div class="destination-tips">
+      <strong>💡 Tipps:</strong> {{ dest.tips }}
+    </div>
+    {% endif %}
+
+    {% if dest.practical_info %}
+    <h3>📍 Praktisch</h3>
+    <p class="destination-desc">{{ dest.practical_info }}</p>
+    {% endif %}
+
+    {% if dest.local_customs %}
+    <h3>🙏 Lokale Bräuche</h3>
+    <p class="destination-desc">{{ dest.local_customs }}</p>
+    {% endif %}
+
+    {% if dest.best_time_to_visit %}
+    <h3>🌤️ Beste Reisezeit</h3>
+    <p class="destination-desc">{{ dest.best_time_to_visit }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Tage -->
+{% for day in days %}
+<div class="section">
+  <div class="day-header avoid-break">
+    <div class="day-header-left">
+      <p class="day-number">Tag {{ day.day_num }}</p>
+      <p class="day-city">{{ day.city }}</p>
+    </div>
+    <div class="day-header-right">
+      <p class="day-date">{{ day.date }}</p>
+      {% if day.weather %}<p class="day-weather weather-{{ day.weather.condition | lower }}">{{ day.weather.temp_max }}° / {{ day.weather.temp_min }}°C, {{ day.weather.condition }}</p>{% endif %}
+    </div>
+  </div>
+
+  {% if day.description %}
+  <div class="day-intro avoid-break">
+    {{ day.description }}
+  </div>
+  {% endif %}
+
+  {% if day.map_image %}
+  <div class="map-container avoid-break">
+    <img class="map-image" src="{{ day.map_image }}" alt="Karte Tag {{ day.day_num }}">
+    <p class="map-caption">Route für Tag {{ day.day_num }} in {{ day.city }}</p>
+  </div>
+  {% endif %}
+
+  <div class="timeline">
+    {% for item in day.schedule %}
+    <div class="timeline-item avoid-break">
+      <p class="timeline-time">{{ item.time }}</p>
+      <p class="timeline-title">{{ item.title }}{% if item.price %}<span class="price-tag">{{ item.price }}</span>{% endif %}</p>
+      {% if item.description %}<p class="timeline-desc">{{ item.description }}</p>{% endif %}
+      {% if item.duration or item.transport_info %}
+      <p class="timeline-meta">
+        {% if item.duration %}⏱ {{ item.duration }}{% endif %}
+        {% if item.duration and item.transport_info %} &bull; {% endif %}
+        {% if item.transport_info %}🚌 {{ item.transport_info }}{% endif %}
+      </p>
+      {% endif %}
+      {% if item.local_image %}
+      <img class="timeline-image" src="{{ item.local_image }}" alt="{{ item.title }}">
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if day.daily_tip %}
+  <div class="transport-box avoid-break">
+    <strong>Tipp des Tages:</strong> {{ day.daily_tip }}
+  </div>
+  {% endif %}
+</div>
+{% endfor %}
+
+<!-- Allgemeine Infos -->
+{% if general_info %}
+<div class="section-major">
+  <h1>Allgemeine Infos</h1>
+  <div class="info-grid">
+    {% if general_info.visa %}
+    <div class="info-box avoid-break">
+      <h3>🛂 Visum & Einreise</h3>
+      <p>{{ general_info.visa }}</p>
+    </div>
+    {% endif %}
+    {% if general_info.currency %}
+    <div class="info-box avoid-break">
+      <h3>💱 Währung</h3>
+      <p>{{ general_info.currency }}</p>
+    </div>
+    {% endif %}
+    {% if general_info.emergency %}
+    <div class="info-box avoid-break">
+      <h3>🚨 Notfallnummern</h3>
+      <p>{{ general_info.emergency }}</p>
+    </div>
+    {% endif %}
+    {% if general_info.timezone %}
+    <div class="info-box avoid-break">
+      <h3>🕐 Zeitzone</h3>
+      <p>{{ general_info.timezone }}</p>
+    </div>
+    {% endif %}
+    {% if general_info.language %}
+    <div class="info-box avoid-break">
+      <h3>🗣 Sprache</h3>
+      <p>{{ general_info.language }}</p>
+    </div>
+    {% endif %}
+    {% if general_info.electricity %}
+    <div class="info-box avoid-break">
+      <h3>🔌 Strom</h3>
+      <p>{{ general_info.electricity }}</p>
+    </div>
+    {% endif %}
+    {% if general_info.apps %}
+    <div class="info-box avoid-break">
+      <h3>📱 Nützliche Apps</h3>
+      <p>{{ general_info.apps }}</p>
+    </div>
+    {% endif %}
+    {% if general_info.customs %}
+    <div class="info-box avoid-break">
+      <h3>🙏 Bräuche & Kultur</h3>
+      <p>{{ general_info.customs }}</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Packliste -->
+{% if packlist %}
+<div class="section-major">
+  <h1>Packliste</h1>
+  <div class="packlist">
+    {% for item in packlist %}
+    <div class="packlist-item">[ ] {{ item }}</div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- Budget & Notizen -->
+<div class="section-major">
+  <h1>Notizen & Budget</h1>
+  <table class="overview-table">
+    <thead>
+      <tr><th>Tag</th><th>Geplant</th><th>Ausgegeben</th><th>Notizen</th></tr>
+    </thead>
+    <tbody>
+      {% for day in days %}
+      <tr>
+        <td>Tag {{ day.day_num }}</td>
+        <td>{{ day.estimated_cost | default('–') }}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
