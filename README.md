@@ -17,6 +17,7 @@ skills/
 ├── gmail-access/          # Search, read, and download Gmail via IMAP
 ├── home-assistant/        # Read and control Home Assistant entities
 ├── memory/                # Persistent markdown-based assistant memory
+├── minimax-quota/         # MiniMax Coding-Plan quota (5h + week) as compact ASCII bars
 ├── travelplan/            # Fully researched, printable travel plan PDFs with maps & images
 ├── wetter-forecast/       # 3-day weather forecast with clothing recommendations (DE focused)
 └── youtube-summarizer/    # Fetch and summarize YouTube transcripts
@@ -44,6 +45,7 @@ skill-name/
 | `home-assistant` | pi.lot system | Home Assistant REST API control |
 | `memory` | pi.lot system | Persistent memory storage |
 | `youtube-summarizer` | pi.lot system | YouTube transcript summarization |
+| `minimax-quota` | Workspace | MiniMax Coding-Plan quotas (5h + week) as ASCII bars |
 | `travelplan` | Workspace | Research and generate travel PDFs |
 | `wetter-forecast` | Workspace | Local weather forecast for Germany |
 
