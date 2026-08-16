@@ -17,6 +17,7 @@ skills/
 ├── gmail-access/          # Search, read, and download Gmail via IMAP
 ├── home-assistant/        # Read and control Home Assistant entities
 ├── hostinger-docker-manager/ # Discover and deploy Hostinger Docker projects
+├── kleinanzeigen-search/  # Search kleinanzeigen.de by postal code + radius
 ├── memory/                # Persistent markdown-based assistant memory
 ├── minimax-quota/         # MiniMax Coding-Plan quota (5h + week) as compact ASCII bars
 ├── travelplan/            # Fully researched, printable travel plan PDFs with maps & images
@@ -51,6 +52,7 @@ skill-name/
 | `minimax-quota` | Workspace | MiniMax Coding-Plan quotas (5h + week) as ASCII bars |
 | `travelplan` | Workspace | Research and generate travel PDFs |
 | `wetter-forecast` | Workspace | Local weather forecast for Germany |
+| `kleinanzeigen-search` | Workspace | Search kleinanzeigen.de by postal code + radius |
 
 ## Usage
 
